@@ -25,20 +25,26 @@ function onStateChange(){
 function defineTemplates(){
     App.topTemplate = `
         <div class="row">
-            <div class="col text-center pt-5 pl-4">
+            <div class="col"></div>
+            <div class="col-12 col-md-8 col-lg-6 text-center pt-5 pl-4">
                 <div class="input-group">
                     <input id="zipCode" class="form-control-lg" type="text" placeholder="zipcode">
                     <button id="submit" class="btn-lg btn bg-dark text-light">SUBMIT</button>
                 </div>
             </div>
+            
+            <div class="col"></div>
         </div>
-        <div class="row"><div id="error" class="col bg-danger text-white my-3"></div></div>
+        <div class="row">
+        <div class="col"></div><div id="error" class="col bg-danger text-white my-3"></div>
+        <div class="col"></div></div>
     `;
     App.responseTemplate = `
-        <div id="response" class="row pb-5">
-            <div class="col">
+        <div id="response" class="row pb-5 opacity-0">
+            <div class="col"></div>
+            <div class="col-12 col-md-8 col-lg-6">
                 <div class="container">
-                    <div class="card bg-dark text-light">
+                    <div class="card text-light">
                         <div class="card-body row">
                             <div class="container">
                                 <div class="row pl-3">
@@ -70,6 +76,7 @@ function defineTemplates(){
                     </div>
                 </div>
             </div>
+            <div class="col"></div>
         </div>
     `;
 }
@@ -136,6 +143,9 @@ function apiGet(){
 }
 
 function updateWeather(){
+    if (App.responseBox.classList.contains('opacity-0')){
+        App.responseBox.classList.remove('opacity-0');
+    }
     App.city.textContent = App.weather.data.name;
     App.tempK.textContent = `${App.weather.data.main.temp} °K`;
     App.tempF.textContent = tempToF(App.weather.data.main.temp);
@@ -148,16 +158,19 @@ function updateWeather(){
     }else{
         App.nextUpdate[1] += 5;
     }
-    if (App.nextUpdate[0] > 12){
-        App.nextUpdate[0] -= 12;
-    }
     if (App.nextUpdate[0] == 0){
         App.nextUpdate[0] = 12;
     }
     if (App.nextUpdate[1] < 10){
-        App.nextUpdate[0] = `0${App.nextUpdate[0]}`;
+        App.nextUpdate[1] = `0${App.nextUpdate[1]}`;
     }
-    App.status.textContent = `As of ${App.currentTime} on ${App.currentDate}. Next update @ ${App.nextUpdate[0]}:${App.nextUpdate[1]}`;
+    if (App.nextUpdate[0] > 12){
+        App.nextUpdate[0] -= 12;
+        App.status.textContent = `As of ${App.currentTime} on ${App.currentDate}. Next update @ ${App.nextUpdate[0]}:${App.nextUpdate[1]} PM`;
+    }else{
+        App.status.textContent = `As of ${App.currentTime} on ${App.currentDate}. Next update @ ${App.nextUpdate[0]}:${App.nextUpdate[1]} AM`;
+    }
+
     
     App.otherInfo.innerHTML = 
         `Wind Speed: ${App.weather.data.wind.speed} mph<br>
