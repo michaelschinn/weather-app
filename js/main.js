@@ -3,7 +3,6 @@ const App = document.getElementById('App');
 function init(){
     setState(0);
     App.apiKey = "dcda06bf12abf7a7d0e5a9ff6149fcaf";
-    loop();
 }
 
 function setState(state){
@@ -22,9 +21,67 @@ function onStateChange(){
     }
 }
 
+function defineTemplates(){
+    App.topTemplate = `
+        <div class="row">
+            <div class="col text-center pt-5 pl-4">
+                <div class="input-group">
+                    <input id="zipCode" class="form-control-lg" type="text" placeholder="zipcode">
+                    <button id="submit" class="btn-lg btn bg-dark text-light">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+        <div class="row"><div id="error" class="col bg-danger text-white my-3"></div></div>
+    `;
+    App.responseTemplate = `
+        <div id="response" class="row pb-5">
+            <div class="col">
+                <div class="container">
+                    <div class="card bg-dark text-light">
+                        <div class="card-body row">
+                            <div class="container">
+                                <div class="row pl-3">
+                                    <div id="dateDisplay" class="col-12 display-6"></div>
+                                    <div id="timeDisplay" class="col-12 display-6"></div>
+                                </div>
+                                <div class="row pt-3 pl-3">
+                                    <div id="tempF" class="col-12 display-1"></div>
+                                </div>
+                                <div class="row pb-3 pl-3">
+                                    <div class="col">
+                                        <span id="tempK"></span> | <span id="tempC"></span>
+                                    </div>
+                                </div>
+                                <div class="row border-top border-dark pt-3 pl-3">
+                                    <div id="city" class="col-12 card-text display-6"></div>
+                                </div>
+                                <div class="row border-bottom border-dark pb-3 pl-3">
+                                    <div id="condition" class="col text-capitalize display-6"></div>
+                                </div>
+                                <div class="row pl-3">
+                                    <div id="status" class="col"></div>
+                                </div>
+                                <div class="row p-3">
+                                    <div id="otherInfo" class="col"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
 function initUi(){
+    defineTemplates();
+    App.innerHTML = App.topTemplate;
     App.zipcode = document.getElementById('zipCode');
     App.submitBtn = document.getElementById('submit');
+    bindEvents();
+}
+
+function initWeatherUi(){
     App.responseBox = document.getElementById('response');
     App.timeDisplay = document.getElementById('timeDisplay');
     App.dateDisplay = document.getElementById('dateDisplay');
@@ -35,7 +92,6 @@ function initUi(){
     App.condition = document.getElementById('condition');
     App.status = document.getElementById('status');
     App.otherInfo = document.getElementById('otherInfo');
-    bindEvents();
 }
 
 function bindEvents(){
@@ -63,6 +119,9 @@ function apiGet(){
             then((response) => {
                 App.weather = response;
                 console.log(App.weather);
+                App.innerHTML += App.responseTemplate;
+                loop();
+                initWeatherUi();
                 updateWeather();
             }).catch(error => {
 
@@ -142,7 +201,7 @@ function classSwap(element, first, last){
 }
 
 function loop(){
-    App.timer = setInterval(updateTimeDate, 500);
+    App.timer = setInterval(updateTimeDate, 100);
 }
 
 init()
