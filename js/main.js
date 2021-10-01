@@ -14,6 +14,7 @@ function onStateChange(){
     switch(App.state){
         case 0 : 
             initUi();
+            App.responseTemplateSet = false;
         case 1 :
             if(App.zipcode.value !== ''){
                 apiGet();
@@ -73,6 +74,10 @@ function defineTemplates(){
     `;
 }
 
+function defineBg{
+    
+}
+
 function initUi(){
     defineTemplates();
     App.innerHTML = App.topTemplate;
@@ -119,7 +124,10 @@ function apiGet(){
             then((response) => {
                 App.weather = response;
                 console.log(App.weather);
-                App.innerHTML += App.responseTemplate;
+                if (App.responseTemplateSet === false){
+                    App.innerHTML += App.responseTemplate;
+                    App.responseTemplateSet = true;
+                }
                 loop();
                 initWeatherUi();
                 updateTimeDate();
@@ -136,14 +144,32 @@ function updateWeather(){
     App.tempK.textContent = `${App.weather.data.main.temp} °K`;
     App.tempF.textContent = tempToF(App.weather.data.main.temp);
     App.tempC.textContent = tempToC(App.weather.data.main.temp);
-    App,condition.textContent = App.weather.data.weather[0].description;
-    App.status.textContent = `As of ${App.currentTime} on ${App.currentDate}. Next update @ ${formatTime(App.hours)}`;
+    App.condition.innerHTML = `<img class="img-thumb" src="http://openweathermap.org/img/wn/${App.weather.data.weather[0].icon}@2x.png">${App.weather.data.weather[0].description}`;
+    App.nextUpdate = [App.hours,App.minutes];
+    if (App.minutes + 5 > 60 ){
+        App.nextUpdate[1] = (App.minutes +5) - 60;
+        App.nextUpdate[0] += 1; 
+    }else{
+        App.nextUpdate[1] += 5;
+    }
+    if (App.nextUpdate[0] > 12){
+        App.nextUpdate[0] -= 12;
+    }
+    if (App.nextUpdate[0] == 0){
+        App.nextUpdate[0] = 12;
+    }
+    if (App.nextUpdate[1] < 10){
+        App.nextUpdate[0] = `0${App.nextUpdate[0]}`;
+    }
+    App.status.textContent = `As of ${App.currentTime} on ${App.currentDate}. Next update @ ${App.nextUpdate[0]}:${App.nextUpdate[1]}`;
+    
     App.otherInfo.innerHTML = 
         `Wind Speed: ${App.weather.data.wind.speed} mph<br>
         Pressure: ${App.weather.data.main.pressure} mb<br>
         Humidity: ${App.weather.data.main.humidity}%<br>
         Feels Like: ${App.weather.data.main.feels_like} °K, ${tempToF(App.weather.data.main.feels_like)}, ${tempToC(App.weather.data.main.feels_like)}`;
     //classSwap(App.response,"d-none","d-block");
+    App.updateTimer = setTimeout(apiGet,300000);
 }
 
 function formatTime(number){
@@ -170,6 +196,8 @@ function getTime(){
 function setTime(){
     if (App.hours > 12){
         App.currentTime = `${App.hours - 12}:${formatTime(App.minutes)} PM`;
+    }else if(App.hours == 0){
+        App.currentTime = `${App.hours + 12}:${formatTime(App.minutes)} AM`;
     }else{
         App.currentTime = `${App.hours}:${formatTime(App.minutes)} AM`;
     }
