@@ -1,0 +1,38 @@
+.opacity0{
+    opacity:0;
+}
+.opacity1{
+    opacity:1;
+}
+html{
+    height: 100%;
+}
+html,body{
+    min-height: 100vh;
+}
+.wrapper{
+    position:relative;
+    width: 100vw;
+    height: 100vh;
+}
+#App{
+    position: relative;
+    z-index: 10;
+}
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    z-index: 0;
+  }
+
+
+#response{
+    opacity: 1;
+    transition: all .5s ease-in-out;
+}
+.card{
+    background-color: rgba(0,0,0,.75)!important;
+}
