@@ -7,20 +7,31 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
 </head>
 <body>
-    <div id="App" class="container-fluid">
+    <div id="App" class="container">
         <div class="row">
-            <div class="col text-center"><input id="zipCode" type="text" placeholder="zipcode"><button id="submit">SUBMIT</button></div>
+            <div class="col text-center pt-5 pl-4">
+                <div class="input-group">
+                    <input id="zipCode" class="form-control-lg" type="text" placeholder="zipcode">
+                    <button id="submit" class="btn-lg btn bg-dark text-light">SUBMIT</button>
+                </div>
+            </div>
         </div>
         <div class="row"><div id="error" class="col bg-danger text-white my-3"></div></div>
-        <div id="response" class="row">
+        <div id="response" class="row pb-5">
             <div class="col">
                 <div class="container">
                     <div class="card bg-dark text-light">
                         <div class="card-body row">
                             <div class="container">
-                                <div class="row">
-                                    <div id="tempF" class="col-12 display-1 pt-3 pl-3"></div>
-                                    <div class="col pb-3 pl-3">
+                                <div class="row pl-3">
+                                    <div id="dateDisplay" class="col-12 display-6"></div>
+                                    <div id="timeDisplay" class="col-12 display-6"></div>
+                                </div>
+                                <div class="row pt-3 pl-3">
+                                    <div id="tempF" class="col-12 display-1"></div>
+                                </div>
+                                <div class="row pb-3 pl-3">
+                                    <div class="col">
                                         <span id="tempK"></span> | <span id="tempC"></span>
                                     </div>
                                 </div>
@@ -29,6 +40,9 @@
                                 </div>
                                 <div class="row border-bottom border-dark pb-3 pl-3">
                                     <div id="condition" class="col text-capitalize display-6"></div>
+                                </div>
+                                <div class="row pl-3">
+                                    <div id="status" class="col"></div>
                                 </div>
                                 <div class="row p-3">
                                     <div id="otherInfo" class="col"></div>

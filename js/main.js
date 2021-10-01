@@ -3,6 +3,7 @@ const App = document.getElementById('App');
 function init(){
     setState(0);
     App.apiKey = "dcda06bf12abf7a7d0e5a9ff6149fcaf";
+    loop();
 }
 
 function setState(state){
@@ -21,29 +22,18 @@ function onStateChange(){
     }
 }
 
-function getTime(){
-    App.date = new Date();
-    App.hours = App.date.getHours();
-    App.minutes = App.date.getMinutes();
-    App.seconds = App.date.getSeconds();
-    App.currentTime = `${App.hours}:${App.minutes}`;
-    
-    App.month = App.date.getMonth();
-    App.day = App.date.getDate();
-    App.year = App.date.getFullYear();
-    App.months = ['January, February, March, April, May, June, July, August, September, October, November, December'];
-    App.currentDate = `${App.months[App.month]} ${App.day}, ${App.year}`;
-}
-
 function initUi(){
     App.zipcode = document.getElementById('zipCode');
     App.submitBtn = document.getElementById('submit');
     App.responseBox = document.getElementById('response');
+    App.timeDisplay = document.getElementById('timeDisplay');
+    App.dateDisplay = document.getElementById('dateDisplay');
     App.city = document.getElementById('city');
     App.tempK = document.getElementById('tempK');
     App.tempF = document.getElementById('tempF');
     App.tempC = document.getElementById('tempC');
     App.condition = document.getElementById('condition');
+    App.status = document.getElementById('status');
     App.otherInfo = document.getElementById('otherInfo');
     bindEvents();
 }
@@ -73,7 +63,7 @@ function apiGet(){
             then((response) => {
                 App.weather = response;
                 console.log(App.weather);
-                update();
+                updateWeather();
             }).catch(error => {
 
                 console.log(error)
@@ -81,18 +71,56 @@ function apiGet(){
     }
 }
 
-function update(){
+function updateWeather(){
     App.city.textContent = App.weather.data.name;
     App.tempK.textContent = `${App.weather.data.main.temp} °K`;
     App.tempF.textContent = tempToF(App.weather.data.main.temp);
     App.tempC.textContent = tempToC(App.weather.data.main.temp);
     App,condition.textContent = App.weather.data.weather[0].description;
+    App.status.textContent = `As of ${App.currentTime} on ${App.currentDate}. Next update @`;
     App.otherInfo.innerHTML = 
         `Wind Speed: ${App.weather.data.wind.speed} mph<br>
         Pressure: ${App.weather.data.main.pressure} mb<br>
         Humidity: ${App.weather.data.main.humidity}%<br>
         Feels Like: ${App.weather.data.main.feels_like} °K, ${tempToF(App.weather.data.main.feels_like)}, ${tempToC(App.weather.data.main.feels_like)}`;
     //classSwap(App.response,"d-none","d-block");
+}
+
+function formatTime(number){
+    if (number < 10){
+        number = `0${number}`;
+        return number;
+    } else {
+        return number;
+    }
+}
+
+function getTime(){
+    App.date = new Date();
+    App.hours = App.date.getHours();
+    App.minutes = App.date.getMinutes();
+    App.seconds = App.date.getSeconds();
+
+    App.month = App.date.getMonth();
+    App.day = App.date.getDate();
+    App.year = App.date.getFullYear();
+    App.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+}
+
+function setTime(){
+    if (App.hours > 12){
+        App.currentTime = `${App.hours - 12}:${formatTime(App.minutes)} PM`;
+    }else{
+        App.currentTime = `${App.hours}:${formatTime(App.minutes)} AM`;
+    }
+    App.currentDate = `${App.months[App.month]} ${App.day}, ${App.year}`;
+}
+
+function updateTimeDate(){
+    getTime();
+    setTime();
+    App.timeDisplay.textContent = App.currentTime;
+    App.dateDisplay.textContent = App.currentDate;
 }
 
 function round(value, decimals){
@@ -111,6 +139,10 @@ function classSwap(element, first, last){
     if(element.contains(first)){
         element.remove(first).add(last);
     }  
+}
+
+function loop(){
+    App.timer = setInterval(updateTimeDate, 500);
 }
 
 init()
