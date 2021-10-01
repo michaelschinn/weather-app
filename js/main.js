@@ -122,6 +122,7 @@ function apiGet(){
                 App.innerHTML += App.responseTemplate;
                 loop();
                 initWeatherUi();
+                updateTimeDate();
                 updateWeather();
             }).catch(error => {
 
@@ -136,7 +137,7 @@ function updateWeather(){
     App.tempF.textContent = tempToF(App.weather.data.main.temp);
     App.tempC.textContent = tempToC(App.weather.data.main.temp);
     App,condition.textContent = App.weather.data.weather[0].description;
-    App.status.textContent = `As of ${App.currentTime} on ${App.currentDate}. Next update @`;
+    App.status.textContent = `As of ${App.currentTime} on ${App.currentDate}. Next update @ ${formatTime(App.hours)}`;
     App.otherInfo.innerHTML = 
         `Wind Speed: ${App.weather.data.wind.speed} mph<br>
         Pressure: ${App.weather.data.main.pressure} mb<br>
@@ -201,7 +202,7 @@ function classSwap(element, first, last){
 }
 
 function loop(){
-    App.timer = setInterval(updateTimeDate, 100);
+    App.timer = setInterval(updateTimeDate, 500);
 }
 
 init()
