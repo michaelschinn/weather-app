@@ -74,10 +74,6 @@ function defineTemplates(){
     `;
 }
 
-function defineBg{
-    
-}
-
 function initUi(){
     defineTemplates();
     App.innerHTML = App.topTemplate;
