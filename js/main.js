@@ -47,11 +47,11 @@ function defineTemplates(){
                     <div class="card text-light">
                         <div class="card-body row">
                             <div class="container">
-                                <div class="row pl-3">
+                                <div class="row pl-3 pb-3">
                                     <div id="dateDisplay" class="col-12 display-6"></div>
                                     <div id="timeDisplay" class="col-12 display-6"></div>
                                 </div>
-                                <div class="row pt-3 pl-3">
+                                <div class="row pt-1 pl-3 border-top border-dark">
                                     <div id="tempF" class="col-12 display-1"></div>
                                 </div>
                                 <div class="row pb-3 pl-3">
@@ -65,7 +65,7 @@ function defineTemplates(){
                                 <div class="row border-bottom border-dark pb-3 pl-3">
                                     <div id="condition" class="col text-capitalize display-6"></div>
                                 </div>
-                                <div class="row pl-3">
+                                <div class="row pl-3 pt-3">
                                     <div id="status" class="col"></div>
                                 </div>
                                 <div class="row p-3">
