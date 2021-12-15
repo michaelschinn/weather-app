@@ -123,7 +123,7 @@ function validZipcode(zipcode){
 
 function apiGet(){
     if(validZipcode(App.zipcode.value) === true){
-        axios.get(`http://api.openweathermap.org/data/2.5/weather?zip=${App.zipcode.value},us&appid=${App.apiKey}`).
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?zip=${App.zipcode.value},us&appid=${App.apiKey}`).
             then((response) => {
                 App.weather = response;
                 console.log(App.weather);
